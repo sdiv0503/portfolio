@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 1. Projects: Your case studies and code
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique // For SEO-friendly URLs (e.g., /projects/fit-track)
+  description String   // Short summary for the card
+  content     String?  @db.Text // Full Markdown content for the details page
+  imageUrl    String?  // Cover image
+  demoUrl     String?  // Link to live site
+  githubUrl   String?  // Link to repo
+  tags        String[] // Tech stack used ["Next.js", "Supabase"]
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// 2. Experience: Your work history timeline
+model Experience {
+  id          String   @id @default(cuid())
+  role        String   // e.g., "Full Stack Intern"
+  company     String   // e.g., "Carina Softlabs"
+  startDate   DateTime
+  endDate     DateTime? // Null indicates "Present"
+  description String   @db.Text // Bullet points of what you achieved
+  location    String?
+  createdAt   DateTime @default(now())
+}
+
+// 3. TechStack: Icons and skills for the marquee
+model TechStack {
+  id       String @id @default(cuid())
+  name     String @unique // e.g., "React"
+  category String // "Frontend", "Backend", "DevOps"
+  icon     String // Path to icon or icon name
+}
+
+// 4. Hackathons: Your achievements
+model Hackathon {
+  id          String   @id @default(cuid())
+  name        String   // e.g., "Gravitas Hackathon"
+  date        DateTime
+  location    String   // e.g., "VIT Vellore"
+  position    String   // e.g., "Top 10"
+  description String?
+}
+
+// 5. Contact: Storing messages from the form
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+}
