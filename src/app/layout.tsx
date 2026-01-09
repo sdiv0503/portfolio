@@ -13,10 +13,6 @@ const inter = Inter({
   display: "swap", // Ensures text is visible immediately even if font is loading
   variable: "--font-sans",
 });
-import type { Metadata } from "next";
-
-// Define your production domain (Change this later when you deploy to Vercel)
-// For now, it falls back to localhost if undefined
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
   ? `https://${process.env.NEXT_PUBLIC_BASE_URL}`
   : "http://localhost:3000";
