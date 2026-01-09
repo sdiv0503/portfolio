@@ -7,6 +7,7 @@ import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll";
 import { SkipNav } from "@/components/shared/skip-nav";
+import { ScrollToAnchor } from "@/components/shared/scroll-to-anchor";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -93,6 +94,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SmoothScrollProvider>
+            <ScrollToAnchor />
             <div className="flex min-h-screen flex-col">
               <Navbar />
               <main id="main-content" className="flex-1" tabIndex={-1}>
