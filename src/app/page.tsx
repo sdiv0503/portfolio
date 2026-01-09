@@ -1,15 +1,51 @@
+import { Suspense } from "react";
+import { HeroSection } from "@/components/shared/hero-section";
+import { AboutSection } from "@/components/shared/about-section";
+import { TechStack } from "@/components/shared/tech-stack";
+import { ExperienceSection } from "@/components/shared/experience";
+import { AchievementsSection } from "@/components/shared/achievements";
+import { ContactAndSocials } from "@/components/shared/contact-socials";
+import { FadeIn } from "@/components/shared/fade-in";
+import { ProjectGridSkeleton, BentoSkeleton } from "@/components/shared/skeletons";
+import { FeaturedProjectsSuspense } from "@/components/home/featured-projects-suspense";
+
+// Ensure the page is dynamic to fetch fresh data on every request
+export const dynamic = "force-dynamic";
+
 export default function Home() {
+  // NOTE: We are NOT awaiting data here anymore. The page loads instantly.
+  
   return (
-    <section className="flex flex-col items-center justify-center space-y-10 py-24 text-center md:py-32">
-      <div className="space-y-4">
-        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-          Layout System Ready
-        </h1>
-        <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-          The Navbar is active. The Footer is active. Dark mode is functional.
-          We are ready for the Hero Section.
-        </p>
-      </div>
-    </section>
+    <div className="flex min-h-screen flex-col">
+      <HeroSection />
+      
+      <FadeIn>
+        <AboutSection />
+      </FadeIn>
+      
+      <FadeIn delay={0.2}>
+        <TechStack />
+      </FadeIn>
+      
+      <FadeIn>
+        <ExperienceSection />
+      </FadeIn>
+      
+      {/* Streaming Projects Section */}
+      <section className="py-24 px-4 bg-neutral-50 dark:bg-black/20">
+         <Suspense fallback={<ProjectGridSkeleton />}>
+            <FeaturedProjectsSuspense />
+         </Suspense>
+      </section>
+
+      <FadeIn>
+        <AchievementsSection />
+      </FadeIn>
+      
+      {/* Streaming Socials Section */}
+      <Suspense fallback={<BentoSkeleton />}>
+         <ContactAndSocials />
+      </Suspense>
+    </div>
   );
 }

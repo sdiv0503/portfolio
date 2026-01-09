@@ -1,0 +1,49 @@
+---
+title: "Optimizing React Performance: From 60 to 100 Lighthouse Score"
+publishedAt: "2024-01-28"
+summary: "Practical techniques I used to optimize Cumulative Layout Shift (CLS) and First Contentful Paint (FCP) on complex dashboards."
+image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop"
+---
+
+## The Hidden Cost of Fonts
+
+The biggest killer of performance in modern web apps is often font loading. If you load fonts via CSS from Google Fonts, you often get a "Flash of Unstyled Text" (FOUT) or a layout shift.
+
+### The Next.js Font Solution
+
+I switched everything to `next/font`. It automatically optimizes your fonts (including custom ones) and removes external network requests for improved privacy and performance.
+
+```typescript
+import { Inter } from 'next/font/google'
+
+// This loads the font at build time and serves it locally!
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+})
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" className={inter.className}>
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+### Image Optimization
+
+Another huge win was replacing standard `<img>` tags with the next/image component.
+
+### Why standard images hurt performance:
+
+1. They don't lazy load by default.
+
+2. They don't resize based on the device (sending a 4k image to a mobile phone).
+
+3. They cause layout shifts as they load.
+
+By using `<Image />`, Next.js automatically generates resized, webp-formatted versions of my assets on the fly.
+
+### Results
+
+After these two changes, my Core Web Vitals score on mobile went from 72 (Yellow) to 98 (Green). Performance isn't an afterthought; it's a feature.

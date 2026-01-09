@@ -1,0 +1,52 @@
+---
+title: "Why I Chose Supabase over MongoDB for My Next Project"
+publishedAt: "2023-12-10"
+summary: "Relational data requires a relational database. Here is why I moved back to SQL after years of NoSQL."
+image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop"
+---
+
+## The NoSQL Trap
+
+For years, I used MongoDB because it was "easy." You dump a JSON object, and it saves. But as my applications grew, I kept running into the same problems:
+1. Data duplication.
+2. Complex aggregation pipelines just to join two "tables."
+3. Lack of strict schema enforcement leading to bugs.
+
+## Enter PostgreSQL (via Supabase)
+
+Supabase gives me the raw power of PostgreSQL with the ease of use of Firebase.
+
+### The Power of Relations
+
+In this portfolio, a `Project` has many `Tags`. In a NoSQL world, I might store tags as an array of strings inside the project. But what if I want to rename a tag? I'd have to update every single project.
+
+In SQL (Prisma), it's trivial:
+
+```prisma
+model Project {
+  id    String @id @default(uuid())
+  title String
+  tags  Tag[]
+}
+
+model Tag {
+  id       String    @id @default(uuid())
+  name     String    @unique
+  projects Project[]
+}
+```
+
+### Row Level Security (RLS)
+
+The killer feature of Supabase is RLS. I can define security policies directly on the database tables.
+
+```SQL
+
+-- Only allow the owner to update their profile
+create policy "Users can update own profile"
+  on profiles for update
+  using ( auth.uid() = id );
+
+```
+
+This means even if my API has a bug, the database itself rejects unauthorized changes. That is peace of mind you don't get easily elsewhere.
