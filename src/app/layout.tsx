@@ -8,7 +8,6 @@ import { Footer } from "@/components/shared/footer";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll";
 import { SkipNav } from "@/components/shared/skip-nav";
 import { ScrollToAnchor } from "@/components/shared/scroll-to-anchor";
-import { CSPostHogProvider } from "@/components/providers/posthog-provider";
 import { Suspense } from "react"; // <--- 1. ADD THIS IMPORT
 
 const inter = Inter({
@@ -97,7 +96,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SmoothScrollProvider>
-            <CSPostHogProvider>
               {/* 2. WRAP SCROLLTOANCHOR IN SUSPENSE */}
               <Suspense fallback={null}>
                 <ScrollToAnchor />
@@ -110,7 +108,6 @@ export default function RootLayout({
                 </main>
                 <Footer />
               </div>
-            </CSPostHogProvider>
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>
