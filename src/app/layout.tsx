@@ -8,12 +8,15 @@ import { Footer } from "@/components/shared/footer";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll";
 import { SkipNav } from "@/components/shared/skip-nav";
 import { ScrollToAnchor } from "@/components/shared/scroll-to-anchor";
+import { CSPostHogProvider } from "@/components/providers/posthog-provider";
+import { Suspense } from "react"; // <--- 1. ADD THIS IMPORT
 
 const inter = Inter({
   subsets: ["latin"],
   display: "swap", // Ensures text is visible immediately even if font is loading
   variable: "--font-sans",
 });
+
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
   ? `https://${process.env.NEXT_PUBLIC_BASE_URL}`
   : "http://localhost:3000";
@@ -94,14 +97,20 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SmoothScrollProvider>
-            <ScrollToAnchor />
-            <div className="flex min-h-screen flex-col">
-              <Navbar />
-              <main id="main-content" className="flex-1" tabIndex={-1}>
-                {children}
-              </main>
-              <Footer />
-            </div>
+            <CSPostHogProvider>
+              {/* 2. WRAP SCROLLTOANCHOR IN SUSPENSE */}
+              <Suspense fallback={null}>
+                <ScrollToAnchor />
+              </Suspense>
+
+              <div className="flex min-h-screen flex-col">
+                <Navbar />
+                <main id="main-content" className="flex-1" tabIndex={-1}>
+                  {children}
+                </main>
+                <Footer />
+              </div>
+            </CSPostHogProvider>
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>
