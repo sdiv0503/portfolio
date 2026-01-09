@@ -25,7 +25,7 @@ export function Footer() {
           </a>
           .
         </p>
-        <div className="flex gap-4">
+        {/* <div className="flex gap-4">
           <a href="#" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground">
             <Github className="h-5 w-5" />
           </a>
@@ -35,7 +35,7 @@ export function Footer() {
           <a href="#" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground">
             <Twitter className="h-5 w-5" />
           </a>
-        </div>
+        </div> */}
       </div>
     </footer>
   );
